@@ -1,0 +1,52 @@
+project -> 
+
+spring starter ->
+
+			web 
+			dev tools 
+			mysql driver 
+			lombok
+			spring-data-jpa***** 
+
+
+application.properties 
+
+server.port=9999
+
+#database 
+driver 
+url
+user
+password 
+
+#hibernate 
+--create			
+--update 
+
+
+sql query -> show-sql
+format-sql 
+
+
+db-query
+	dialect 
+
+
+----------------------------------------------------	
+	
+Signup 
+	rest api 
+	
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
