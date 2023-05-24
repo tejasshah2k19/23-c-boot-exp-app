@@ -19,10 +19,10 @@ public class UserEntity {
 
 	@Column(name = "firstName", length = 30)
 	String firstName; // firstName varchar(255)
-	String lastName; 
+	String lastName;
 	String email;
 	String password;
-	
+	String token;
 
 	public Integer getUserId() {
 		return userId;
@@ -64,6 +64,12 @@ public class UserEntity {
 		this.lastName = lastName;
 	}
 
- 
-	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 }

@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,10 +29,21 @@ public class UserController {
 	UserRepository userRepo;
 
 	@GetMapping("/all")
-	public ResponseEntity<?> getAllUsers() {
+	public ResponseEntity<?> getAllUsers(HttpServletRequest request) {
 
-		List<UserEntity> users = userRepo.findAll();
-		return ResponseEntity.ok(users);
+		String token = request.getHeader("token");
+		System.out.println(token);
+
+		Optional<UserEntity> optionalUserEntity = userRepo.findByToken(token);
+		if (optionalUserEntity.isPresent() == false) {
+			HashMap<String, Object> data = new HashMap<>();
+			data.put("token", token);
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(data);
+		} else {
+
+			List<UserEntity> users = userRepo.findAll();
+			return ResponseEntity.ok(users);
+		}
 	}
 
 	// get user by id
@@ -82,7 +96,7 @@ public class UserController {
 		} catch (Exception e) {
 			resp.put("msg", "SMW");
 			resp.put("userId", userId);
-			resp.put("errorMsg",e.getMessage());
+			resp.put("errorMsg", e.getMessage());
 			return ResponseEntity.ok(resp);
 
 		}
@@ -90,13 +104,10 @@ public class UserController {
 
 	//
 	@PutMapping
-	public ResponseEntity<?> updateUser(@RequestBody UserEntity user){
-		userRepo.save(user); // insert update -> by userid -> pk if id is present then update else insert -> upsert 
+	public ResponseEntity<?> updateUser(@RequestBody UserEntity user) {
+		userRepo.save(user); // insert update -> by userid -> pk if id is present then update else insert ->
+								// upsert
 		return ResponseEntity.ok(user);
 	}
-	
-	
-	
-	
-	
+
 }
