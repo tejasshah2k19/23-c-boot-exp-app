@@ -38,8 +38,39 @@ Signup
 	rest api 
 	
 
+Filter -> preProcess your request
 
 
+
+users 
+	userid fn ln em pwd token roleid
+	
+role 
+	roleid rolename 
+	1		admin
+	2		user 
+	3		vendor 
+	
+	1 user 1 role 
+ 
+relationship 
+
+1 :  1 
+1 :  M
+M :  1 
+M :  M 
+
+join 
+
+
+school guj -> 
+		student fact admin -> verification -> 
+						->approve 
+
+amazon -> 
+		signup -> user[buyer] 
+		
+		signup -> user[vendor] -> name contact 
 
 
 

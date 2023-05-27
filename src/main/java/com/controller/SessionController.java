@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dto.LoginDto;
+import com.entity.RoleEntity;
 import com.entity.UserEntity;
+import com.repository.RoleRepository;
 import com.repository.UserRepository;
 import com.service.SessionService;
 
@@ -26,10 +28,14 @@ public class SessionController {
 	@Autowired
 	SessionService sessionService;
 
+	@Autowired
+	RoleRepository roleRepo;
+	
 	// signup
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(@RequestBody UserEntity user) {
-
+		RoleEntity role = roleRepo.findById(1).get();
+		user.setRole(role);
 		userRepo.save(user);// insert
 
 		return ResponseEntity.ok(user);
