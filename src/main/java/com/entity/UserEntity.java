@@ -1,16 +1,16 @@
 package com.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 //entity -> class -> table 
 
@@ -32,6 +32,10 @@ public class UserEntity {
 	@OneToOne
 	@JoinColumn(name="roleId")
 	RoleEntity role;
+	
+	@OneToMany(mappedBy = "user")
+	List<AccountEntity> accounts;
+	
 	
 	public Integer getUserId() {
 		return userId;
@@ -87,6 +91,14 @@ public class UserEntity {
 
 	public void setRole(RoleEntity role) {
 		this.role = role;
+	}
+
+	public List<AccountEntity> getAccounts() {
+		return accounts;
+	}
+
+	public void setAccounts(List<AccountEntity> accounts) {
+		this.accounts = accounts;
 	}
 
 	

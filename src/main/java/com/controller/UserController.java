@@ -19,10 +19,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.entity.AccountEntity;
 import com.entity.RoleEntity;
 import com.entity.UserEntity;
+import com.repository.AccountRepository;
 import com.repository.RoleRepository;
 import com.repository.UserRepository;
+
+import ch.qos.logback.core.pattern.util.RegularEscapeUtil;
 
 @RestController
 @RequestMapping("/api/v1/users/")
@@ -30,10 +34,12 @@ public class UserController {
 
 	@Autowired
 	UserRepository userRepo;
-	
+
 	@Autowired
 	RoleRepository roleRepo;
-	
+
+	@Autowired
+	AccountRepository accountRepo;
 
 	@GetMapping("/all")
 	public ResponseEntity<?> getAllUsers(HttpServletRequest request) {
@@ -125,4 +131,18 @@ public class UserController {
 
 		return ResponseEntity.ok(user);
 	}
+
+	@GetMapping("/myaccounts/{userId}")
+	public ResponseEntity<?> myAccounts(@PathVariable("userId") Integer userId) {
+		UserEntity user = userRepo.findById(userId).get();
+		return ResponseEntity.ok(user.getAccounts());
+	}
+
+	@GetMapping("/myaccounts2/{userId}")
+	public ResponseEntity<?> myAccounts2(@PathVariable("userId") Integer userId) {
+
+		List<AccountEntity> accounts = accountRepo.findByUser(userId);
+		return ResponseEntity.ok(accounts);
+	}
+
 }

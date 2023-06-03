@@ -10,35 +10,37 @@ import org.springframework.stereotype.Service;
 
 import com.dto.LoginDto;
 import com.entity.UserEntity;
+import com.enums.ExpAppError;
+import com.exception.ExpAppException;
 import com.repository.UserRepository;
 
 @Service
 public class SessionService {
-	
+
 	@Autowired
 	UserRepository userRepo;
 
 	@Autowired
-	TokenGenerator tokenGenerator; 
-	
-	public UserEntity authenticateUser(LoginDto login) {
+	TokenGenerator tokenGenerator;
+
+	public UserEntity authenticateUser(LoginDto login) throws ExpAppException {
 
 		Optional<UserEntity> userOptional = userRepo.findByEmail(login.getEmail());
-
 		if (userOptional.isPresent() == false) {
-			return null;
+			throw new ExpAppException(ExpAppError.INVALID_CREDENTIALS);
 		} else {
 			UserEntity loggedInUser = userOptional.get();
 			if (loggedInUser.getPassword().equals(login.getPassword())) {
 				// success
-				
+
 				loggedInUser.setToken(tokenGenerator.generateToken(16));
 				userRepo.save(loggedInUser);
-				
+
 				return loggedInUser;
 			} else {
 				return null;
 			}
 		}
+
 	}
 }

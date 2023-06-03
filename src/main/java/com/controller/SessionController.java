@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dto.LoginDto;
 import com.entity.RoleEntity;
 import com.entity.UserEntity;
+import com.exception.ExpAppException;
 import com.repository.RoleRepository;
 import com.repository.UserRepository;
 import com.service.SessionService;
@@ -30,7 +31,7 @@ public class SessionController {
 
 	@Autowired
 	RoleRepository roleRepo;
-	
+
 	// signup
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(@RequestBody UserEntity user) {
@@ -44,17 +45,16 @@ public class SessionController {
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody LoginDto login) {
 
-		UserEntity loggedInUser = sessionService.authenticateUser(login);
-		if (loggedInUser == null) {
-			HashMap<String, Object> data = new HashMap<>();
-			data.put("data", login);
-			data.put("msg", "Invalid Credentials");
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(data);
-		} else {
+		try {
+			UserEntity loggedInUser = sessionService.authenticateUser(login);
+
 			HashMap<String, Object> data = new HashMap<>();
 			data.put("data", loggedInUser);
 			data.put("msg", "Login success");
 			return ResponseEntity.status(HttpStatus.OK).body(data);
+
+		} catch (ExpAppException e) {
+			return ResponseEntity.ok(e);
 		}
 
 	}
